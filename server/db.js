@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-console.log("Connecting to MongoDB");
 
 mongoose.connect("mongodb+srv://navisenthilnadhan:klUZy1vDOJOtoQV9@cluster0.trkaudm.mongodb.net/", {
     useNewUrlParser: true,
