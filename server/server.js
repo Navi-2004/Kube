@@ -14,9 +14,13 @@ app.get('/', (req, res) => {
   });
 
 const quizRoutes = require('./routes/QuizRoutes');
-
 app.use('/quiz', quizRoutes);
+
+
+const userRoutes = require('./routes/UserRoutes');
+app.use('/user',userRoutes)
 
 app.listen(5000,()=>{
     console.log("Server started at port 5000");
 })
+
