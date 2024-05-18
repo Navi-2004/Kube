@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Quiz = require('../models/Quiz');
 const Question = require('../models/Question');
+const QuizResult = require('../models/QuizResult');
 
 router.post('/', async (req, res) => {
     const { title, questions } = req.body;
@@ -63,5 +64,37 @@ router.post('/:id/submit', async (req, res) => {
         res.status(500).send(err);
     }
 });
+
+router.post('/quiz-results', async (req, res) => {
+    try {
+      const { userId, quizId, quizName, marks } = req.body;
+  
+      const quizResult = new QuizResult({
+        userId,
+        quizId,
+        quizName,
+        marks,
+      });
+  
+      await quizResult.save();
+      res.json({ message: 'Quiz result saved successfully' });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
+  
+  router.get('/quiz-results/:userId', async (req, res) => {
+    try {
+      const { userId } = req.params;
+  
+      const quizResults = await QuizResult.find({ userId });
+      res.json(quizResults);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
+  
 
 module.exports = router;

@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
         required: true,
       },
     },
-  ],
+  ],  
 });
 
 userSchema.methods.verifyPassword = async function (password) {

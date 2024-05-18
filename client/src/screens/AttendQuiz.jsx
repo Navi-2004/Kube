@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "../axiosConfig";
+import Navbar from "../components/Navbar";
 
 const AttendQuiz = () => {
   const { id } = useParams();
@@ -57,6 +58,8 @@ const AttendQuiz = () => {
       </div>
     );
     return (
+      <div>
+      <Navbar />
       <div className="px-4">
           <h1 className="text-3xl font-bold text-center mb-8">{quiz.title}</h1>
           {quiz.questions.slice(0, currentQuestionIndex + 1).map((question, index) => (
@@ -97,6 +100,7 @@ const AttendQuiz = () => {
                   <p className="text-lg text-center mt-4">Your score: {result.score} / {result.total}</p>
               </div>
           )}
+      </div>
       </div>
   );
 };

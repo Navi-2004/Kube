@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
+const dotenv = require('dotenv').config();
 
-mongoose.connect("mongodb+srv://navisenthilnadhan:klUZy1vDOJOtoQV9@cluster0.trkaudm.mongodb.net/", {
+mongoose.connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
@@ -12,3 +13,4 @@ mongoose.connection.on('connected', () => {
 mongoose.connection.on('error', (err) => {
     console.error("Error connecting to MongoDB:", err);
 });
+  
