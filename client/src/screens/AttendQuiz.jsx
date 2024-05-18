@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "../axiosConfig";
 import Navbar from "../components/Navbar";
+import { jwtDecode } from "jwt-decode";
 
 const AttendQuiz = () => {
   const { id } = useParams();
@@ -28,6 +29,17 @@ const AttendQuiz = () => {
     fetchQuiz();
   }, [id]);
 
+
+  const getUserIdFromToken = () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      return decodedToken.userId;
+    }
+    return null;
+  };
+
+
   const handleOptionChange = (questionId, option) => {
     setAnswers((prevAnswers) => ({
       ...prevAnswers,
@@ -41,6 +53,15 @@ const AttendQuiz = () => {
         answers,
       });
       setResult(response.data);
+      await axios.post("/quiz/quiz-results", {
+        userId: getUserIdFromToken(),
+        quizId: id,
+        quizName: quiz.title,
+        marks: response.data.score, 
+        total: response.data.total,
+      });
+      console.log("Quiz result stored successfully");
+      console.log(getUserIdFromToken());
     } catch (err) {
       setError(err);
     }

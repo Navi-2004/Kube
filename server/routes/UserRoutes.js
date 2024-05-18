@@ -4,7 +4,7 @@ const User = require("../models/User");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const dotenv = require("dotenv").config();
-
+const QuizResult = require("../models/QuizResult");
 router.post("/login", async (req, res) => {
   const { username, password } = req.body;
 
@@ -50,5 +50,19 @@ router.post("/register", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
+router.get("/:userId/quizzes", async (req, res) => {
+  const userId = req.params.userId;
+
+  try {
+    const userQuizzes = await QuizResult.find({ userId });
+
+    res.json(userQuizzes);
+  } catch (error) {
+    console.error("Error fetching user quizzes:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 
 module.exports = router;

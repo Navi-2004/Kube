@@ -65,36 +65,52 @@ router.post('/:id/submit', async (req, res) => {
     }
 });
 
-router.post('/quiz-results', async (req, res) => {
+router.post("/quiz-results", async (req, res) => {
     try {
-      const { userId, quizId, quizName, marks } = req.body;
+
+      const { userId, quizId, quizName,  marks,total } = req.body;
   
       const quizResult = new QuizResult({
         userId,
         quizId,
         quizName,
         marks,
+        total
       });
   
       await quizResult.save();
-      res.json({ message: 'Quiz result saved successfully' });
+  
+      res.status(201).json({ message: "Quiz result stored successfully" });
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Internal server error' });
+      console.error("Error storing quiz result:", error);
+      res.status(500).json({ error: "Internal server error" });
     }
   });
+
+  router.get('/report/:quizId', async (req, res) => {
+    const { quizId } = req.params;
   
-  router.get('/quiz-results/:userId', async (req, res) => {
     try {
-      const { userId } = req.params;
+      const quizReport = await QuizResult.find({ quizId });
   
-      const quizResults = await QuizResult.find({ userId });
-      res.json(quizResults);
+      const attendees = quizReport.map((result) => ({
+        userId: result.userId,
+        marks: result.marks,
+        total: result.total
+      }));
+  
+      const quizData = {
+        quizId,
+        quizName: quizReport.length > 0 ? quizReport[0].quizName : '',
+        attendees
+      };
+  
+      res.json(quizData);
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Internal server error' });
     }
   });
-  
+
 
 module.exports = router;

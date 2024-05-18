@@ -8,6 +8,8 @@ import AttendQuiz from './screens/AttendQuiz'
 import Login from './screens/Login'
 import Register from './screens/Register'
 import Profile from './screens/Profile'
+import Admin from './screens/Admin'
+import QuizReport from './screens/QuizReport'
 
 
 function App() {
@@ -16,13 +18,16 @@ function App() {
   <div>
     <BrowserRouter>
     <Routes>
-      <Route path="/" element={<Welcome />} />
-      <Route path="/home" element={<Home />} /> 
+      {/* <Route path="/" element={<Welcome />} /> */}
+      <Route path="/" element={<Home />} /> 
       <Route path="/create" element={<CreateQuiz />} />
       <Route path="/quiz/:id" element={<AttendQuiz />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/profile" element={<Profile />} />
+      <Route path="/admin" element={<Admin />} />
+      <Route path="/quizReport/:id" element={<QuizReport />} />
+
 
     </Routes>
     </BrowserRouter>

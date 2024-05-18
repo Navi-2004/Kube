@@ -1,6 +1,7 @@
 import React from 'react';
 import student from '../assets/student.gif';
 import exam from '../assets/exam.gif';
+import success from '../assets/success.png';
 
 const Banner = () => {
   return (
@@ -20,7 +21,7 @@ const Banner = () => {
         </div>
         
         <div className="md:w-1/2 grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8 md:mt-0">
-          <img src={student} alt="Student" className="rounded-lg shadow-lg ml-24 " />
+          <img src={success} alt="Student" className="rounded-lg shadow-lg  h-full  lg:ml-60 sm:ml-0 w-full " />
           {/* <img src={exam} alt="Exam" className="rounded-lg shadow-lg  mt-36 ml-24 " /> */}
         </div>
       </div>

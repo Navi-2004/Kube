@@ -11,8 +11,8 @@ const quizResultSchema = new mongoose.Schema({
     ref: 'Quiz'
   },
   quizName: String,
-  name: String,
   marks: Number,
+  total: Number,
   // Add more fields as needed
 });
 
