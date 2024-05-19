@@ -38,7 +38,7 @@ const CreateQuiz = () => {
         if (response.status === 201) {
           alert('Quiz created successfully');
             console.log('Quiz created:', response.data);
-            navigate('/admin');
+            navigate('/adminpage');
         } else {
           alert('Failed to create quiz');
             console.error('Failed to create quiz');
