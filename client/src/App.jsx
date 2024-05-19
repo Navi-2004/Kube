@@ -11,6 +11,7 @@ import Profile from './screens/Profile'
 import Admin from './screens/Admin'
 import QuizReport from './screens/QuizReport'
 import ViewResult from './screens/ViewResult'
+import AdminLogin from './screens/AdminLogin'
 
 
 function App() {
@@ -26,9 +27,10 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/profile" element={<Profile />} />
-      <Route path="/admin" element={<Admin />} />
+      <Route path="/adminpage" element={<Admin />} />
       <Route path="/quizReport/:id" element={<QuizReport />} />
       <Route path="/viewresult" element={<ViewResult />} />
+      <Route path="/adminlogin" element={<AdminLogin />} />
 
 
 
