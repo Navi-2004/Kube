@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import axios from '../axiosConfig';
+import { useNavigate } from 'react-router-dom';
 
 
 const CreateQuiz = () => {
   const [questions, setQuestions] = useState([{ text: '', options: ['', '', ''], correctAnswer: '' }]);
   const [quizname,setQuizName]=useState('');
+  const navigate = useNavigate();
   const addQuestion = () => {
     setQuestions([...questions, { text: '', options: ['', '', ''], correctAnswer: '' }]);
   };
@@ -36,6 +38,7 @@ const CreateQuiz = () => {
         if (response.status === 201) {
           alert('Quiz created successfully');
             console.log('Quiz created:', response.data);
+            navigate('/admin');
         } else {
           alert('Failed to create quiz');
             console.error('Failed to create quiz');

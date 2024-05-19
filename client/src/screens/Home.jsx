@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import axios from "../axiosConfig";
 import Navbar from "../components/Navbar";
 import Banner from "../components/Banner";
+import Footer from "../components/Footer";
+import CustomFooter from "../components/CustomFooter";
 
 const Home = () => {
   const [quizzes, setQuizzes] = useState([]);
@@ -32,9 +34,9 @@ const Home = () => {
           {quizzes.map((quiz) => (
             <div
               key={quiz._id}
-              className="border rounded-lg overflow-hidden shadow-md "
+              className="border rounded-lg overflow-hidden shadow-md  w-96"
             >
-              <div className="p-4">
+              <div className="p-4 ">
                 <h3 className="text-lg md:text-xl font-bold mb-2">
                   {quiz.title}
                 </h3>
@@ -49,6 +51,7 @@ const Home = () => {
           ))}
         </div>
       </div>
+      <CustomFooter />
     </div>
   );
 };

@@ -10,6 +10,7 @@ import Register from './screens/Register'
 import Profile from './screens/Profile'
 import Admin from './screens/Admin'
 import QuizReport from './screens/QuizReport'
+import ViewResult from './screens/ViewResult'
 
 
 function App() {
@@ -27,6 +28,8 @@ function App() {
       <Route path="/profile" element={<Profile />} />
       <Route path="/admin" element={<Admin />} />
       <Route path="/quizReport/:id" element={<QuizReport />} />
+      <Route path="/viewresult" element={<ViewResult />} />
+
 
 
     </Routes>

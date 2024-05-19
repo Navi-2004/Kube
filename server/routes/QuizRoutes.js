@@ -4,6 +4,7 @@ const Quiz = require('../models/Quiz');
 const Question = require('../models/Question');
 const QuizResult = require('../models/QuizResult');
 
+
 router.post('/', async (req, res) => {
     const { title, questions } = req.body;
 
@@ -111,6 +112,21 @@ router.post("/quiz-results", async (req, res) => {
       res.status(500).json({ error: 'Internal server error' });
     }
   });
+
+  router.get('/attended/:userId/:id', async (req, res) => {
+    console.log(req.params);
+    const { userId, id } = req.params;
+    console.log("Value", userId, id);
+
+    try {
+        const quizResults = await QuizResult.find({ userId: userId, quizId: id });
+        res.json(quizResults);
+    } catch (err) {
+        console.error('Error retrieving quiz results:', err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 
 
 module.exports = router;

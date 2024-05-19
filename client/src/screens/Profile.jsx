@@ -4,11 +4,14 @@ import { Navigate } from "react-router-dom";
 import axios from "../axiosConfig";
 import { jwtDecode } from "jwt-decode";
 import Navbar from '../components/Navbar'
+// import { Line } from 'react-chartjs-2';
+
 
 function Profile() {
   const { token, loading } = useContext(AuthContext);
   const [userQuizzes, setUserQuizzes] = useState([]);
   const [error, setError] = useState(null);
+  // const [quiz, setQuiz] = useState(null);
 
   const getUserIdFromToken = () => {
     const token = localStorage.getItem("token");
@@ -19,6 +22,7 @@ function Profile() {
     return null;
   };
 
+  
   useEffect(() => {
     const fetchUserQuizzes = async () => {
       try {
@@ -32,6 +36,7 @@ function Profile() {
           },
         });
         setUserQuizzes(response.data);
+        console.log(response.data);
       } catch (err) {
         setError(err);
       }
@@ -40,6 +45,7 @@ function Profile() {
     if (token) {
       fetchUserQuizzes();
     }
+    
   }, [token]);
 
   if (loading) {
@@ -53,10 +59,24 @@ function Profile() {
   if (error) {
     return <div>Error: {error.message}</div>;
   }
+  const lastFiveQuizzes = userQuizzes.slice(-5);
+  const chartData = {
+    labels: lastFiveQuizzes.map(quiz => quiz.quizName),
+    datasets: [
+      {
+        label: 'Score',
+        data: lastFiveQuizzes.map(quiz => quiz.marks),
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 1,
+      },
+    ],
+  };
 
   return (
     <div>
       <Navbar />
+      <div>
     <div className="container mx-auto px-4 py-8 lg:m-24 w-96 ">
       <h2 className="text-3xl font-bold mb-4">Quizzes</h2>
       <ul className="space-y-4">
@@ -67,6 +87,11 @@ function Profile() {
           </li>
         ))}
       </ul>
+    </div>
+    {/* <div className="container mx-auto px-4 py-8 lg:m-24 w-96">
+        <h2 className="text-3xl font-bold mb-4">Last 5 Quiz Scores</h2>
+        <Line data={chartData} />
+      </div> */}
     </div>
     </div>
   );
