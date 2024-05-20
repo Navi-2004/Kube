@@ -8,7 +8,7 @@ const AdminLogin = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (username === 'admin' && password === 'admin') {
+    if (username === 'admin' && password === 'adminpass') {
      navigate('/adminpage');
 
       console.log('Admin logged in successfully!');

@@ -23,7 +23,9 @@ const ViewResult = () => {
           <p className="text-white">
             Total questions: <span className="font-bold text-orange-500">{result.total}</span>
           </p>
-          <Link to="/">Go to home</Link>
+          <Link to="/">
+            <button className="border-blue-600 bg-white hover:bg-slate-400 hover:text-black mt-5">Go to home</button>
+            </Link>
         </div>
       </div>
     </div>

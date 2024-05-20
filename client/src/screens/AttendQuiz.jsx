@@ -22,48 +22,24 @@ const AttendQuiz = () => {
       const decodedToken = jwtDecode(token);
       return decodedToken.userId;
     }
+    else{
+      navigate("/login");
+    }
     return null;
   };
 
-  // const handleSubmit = async () => {
-  //   try {
-  //     const response = await axios.post(`quiz/${id}/submit`, {
-  //       answers,
-  //     });
-  //     setResult(response.data);
-  //     setSwitchedTab(true);
-
-  //     await axios.post("/quiz/quiz-results", {
-  //       userId: getUserIdFromToken(),
-  //       quizId: id,
-  //       quizName: quiz.title,
-  //       marks: response.data.score,
-  //       total: response.data.total,
-  //     });
-  //     setSwitchedTab(false);
-  //     navigate("/viewresult", { state: { result: response.data } });
-
-  //     console.log("Quiz result stored successfully");
-
-
-  //   } catch (err) {
-  //     setError(err);
-  //   }
-  // };
-
+  
   const handleSubmit = async (title) => {
     try {
       const response = await axios.post(`quiz/${id}/submit`, {
         answers,
       });
   
-      // Ensure response data is valid
       if (!response.data) {
         throw new Error("Invalid response data");
       }
   
       setResult(response.data);
-      // setSwitchedTab(true);
   
       await axios.post("/quiz/quiz-results", {
         userId: await getUserIdFromToken(),
@@ -73,7 +49,6 @@ const AttendQuiz = () => {
         total: response.data.total,
       });
   
-      // setSwitchedTab(false);
   
       navigate("/viewresult", { state: { result: response.data } });
       

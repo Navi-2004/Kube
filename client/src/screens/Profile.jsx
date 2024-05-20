@@ -1,17 +1,38 @@
 import React, { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../components/AuthContext";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import axios from "../axiosConfig";
-import { jwtDecode } from "jwt-decode";
-import Navbar from '../components/Navbar'
-// import { Line } from 'react-chartjs-2';
+import {jwtDecode} from "jwt-decode";
+import Navbar from "../components/Navbar";
+import { Line } from "react-chartjs-2";
 
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 function Profile() {
   const { token, loading } = useContext(AuthContext);
   const [userQuizzes, setUserQuizzes] = useState([]);
   const [error, setError] = useState(null);
-  // const [quiz, setQuiz] = useState(null);
+  const [userName, setUserName] = useState(null);
+  const navigate = useNavigate();
 
   const getUserIdFromToken = () => {
     const token = localStorage.getItem("token");
@@ -22,7 +43,6 @@ function Profile() {
     return null;
   };
 
-  
   useEffect(() => {
     const fetchUserQuizzes = async () => {
       try {
@@ -36,7 +56,6 @@ function Profile() {
           },
         });
         setUserQuizzes(response.data);
-        console.log(response.data);
       } catch (err) {
         setError(err);
       }
@@ -45,8 +64,28 @@ function Profile() {
     if (token) {
       fetchUserQuizzes();
     }
-    
   }, [token]);
+
+  useEffect(() => {
+    const fetchUserName = async () => {
+      try {
+        const userId = getUserIdFromToken();
+        const response = await axios.get(`/user/name/${userId}`);
+        setUserName(response.data);
+      } catch (err) {
+        console.log(`Error fetching user name: ${err}`);
+      }
+    };
+
+    if (token) {
+      fetchUserName();
+    }
+  }, [token]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/");
+  };
 
   if (loading) {
     return null;
@@ -59,15 +98,16 @@ function Profile() {
   if (error) {
     return <div>Error: {error.message}</div>;
   }
+
   const lastFiveQuizzes = userQuizzes.slice(-5);
   const chartData = {
-    labels: lastFiveQuizzes.map(quiz => quiz.quizName),
+    labels: lastFiveQuizzes.map((quiz) => quiz.quizName),
     datasets: [
       {
-        label: 'Score',
-        data: lastFiveQuizzes.map(quiz => quiz.marks),
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        borderColor: 'rgba(75, 192, 192, 1)',
+        label: "Score",
+        data: lastFiveQuizzes.map((quiz) => quiz.marks),
+        backgroundColor: "rgba(75, 192, 192, 0.2)",
+        borderColor: "rgba(75, 192, 192, 1)",
         borderWidth: 1,
       },
     ],
@@ -76,23 +116,38 @@ function Profile() {
   return (
     <div>
       <Navbar />
-      <div>
-    <div className="container mx-auto px-4 py-8 lg:m-24 w-96 ">
-      <h2 className="text-3xl font-bold mb-4">Quizzes</h2>
-      <ul className="space-y-4">
-        {userQuizzes.map((quiz) => (
-          <li key={quiz._id} className="dark:bg-gray-800 p-4 rounded shadow ">
-            <p className="text-lg font-semibold">{quiz.quizName}</p>
-            <p className="text-sm">Score: {quiz.marks}/{quiz.total}</p>
-          </li>
-        ))}
-      </ul>
-    </div>
-    {/* <div className="container mx-auto px-4 py-8 lg:m-24 w-96">
-        <h2 className="text-3xl font-bold mb-4">Last 5 Quiz Scores</h2>
-        <Line data={chartData} />
-      </div> */}
-    </div>
+      <div className="container mx-auto px-4 py-8 lg:ml-24 w-full flex justify-between items-center">
+        <h2 className="text-4xl font-extrabold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-800 via-blue-900 to-black">
+          Hello, {userName}!
+        </h2>
+        <button
+          onClick={handleLogout}
+          className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700 transition duration-300 lg:mr-48 mb-4"
+        >
+          Logout
+        </button>
+      </div>
+
+      <div className="container mx-auto px-2 py-8 w-full flex justify-center">
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md w-full max-w-2xl">
+          <h2 className="text-3xl font-bold mb-4 text-center">Last 5 Quiz Scores</h2>
+          <Line data={chartData} />
+        </div>
+      </div>
+
+      <div className="container mx-auto px-4 mt-8 w-full max-w-5xl">
+        <h2 className="text-3xl font-bold mb-4 text-center">Past Quizzes</h2>
+        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {userQuizzes.map((quiz) => (
+            <li key={quiz._id} className="dark:bg-gray-800 bg-white p-4 rounded shadow">
+              <p className="text-lg font-semibold">{quiz.quizName}</p>
+              <p className="text-sm">
+                Score: {quiz.marks}/{quiz.total}
+              </p>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }
