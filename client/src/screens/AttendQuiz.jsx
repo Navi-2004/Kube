@@ -49,7 +49,8 @@ const AttendQuiz = () => {
         total: response.data.total,
       });
   
-  
+      document.exitFullscreen();
+
       navigate("/viewresult", { state: { result: response.data } });
       
       console.log("Quiz result stored successfully");
@@ -99,11 +100,38 @@ const AttendQuiz = () => {
       }
     };
 
+    const handleFullscreenChange = async () => {
+      if (!document.fullscreenElement) {
+        await handleSubmit("Plagiarized Quiz");
+        alert("You exited fullscreen mode. Submitting the quiz...");
+      }
+    };
+
+    const requestFullScreen = () => {
+      const element = document.documentElement;
+      if (element.requestFullscreen) {
+        element.requestFullscreen();
+      } else if (element.mozRequestFullScreen) { 
+        element.mozRequestFullScreen();
+      } else if (element.webkitRequestFullscreen) { 
+        element.webkitRequestFullscreen();
+      } else if (element.msRequestFullscreen) { 
+        element.msRequestFullscreen();
+      }
+    };
+
+    
     document.addEventListener("visibilitychange", handleVisibilityChange);
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+
+    requestFullScreen();
 
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+
     };
+  
 
   }, [id, answers]);
 

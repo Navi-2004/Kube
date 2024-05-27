@@ -12,6 +12,8 @@ import Admin from './screens/Admin'
 import QuizReport from './screens/QuizReport'
 import ViewResult from './screens/ViewResult'
 import AdminLogin from './screens/AdminLogin'
+import About from './screens/About'
+import TestInstructions from './screens/TestInstructions'
 
 
 function App() {
@@ -31,6 +33,9 @@ function App() {
       <Route path="/quizReport/:id" element={<QuizReport />} />
       <Route path="/viewresult" element={<ViewResult />} />
       <Route path="/adminlogin" element={<AdminLogin />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/test/:id" element={<TestInstructions />} /> 
+
 
 
 

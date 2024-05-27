@@ -128,5 +128,27 @@ router.post("/quiz-results", async (req, res) => {
 });
 
 
+router.delete('/:quizId', async (req, res) => {
+    console.log("deleting");
+    const quizId = req.params.quizId;
+  
+    try {
+      await Quiz.findByIdAndDelete(quizId);
+  
+      const deletedQuestions = await Question.deleteMany({ _id: { $in: quizId.questions } });
+  
+      if (deletedQuestions.deletedCount > 0) {
+        console.log(`${deletedQuestions.deletedCount} questions deleted.`);
+      } else {
+        console.log('No questions found for deletion.');
+      }
+  
+      res.status(200).json({ success: true, message: 'Quiz and associated questions deleted successfully.' });
+    } catch (error) {
+      console.error('Error deleting quiz and associated questions:', error);
+      res.status(500).json({ success: false, message: 'An error occurred while deleting the quiz and associated questions.' });
+    }
+  });
+  
 
 module.exports = router;
