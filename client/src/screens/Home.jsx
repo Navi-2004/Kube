@@ -98,7 +98,7 @@ const Home = () => {
         <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">
           Quizzes
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8  w-full sm:w-3/4 lg:w-3/4 mx-auto ">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8  w-96 lg:w-3/4 mx-auto ">
           {quizzes.map((quiz) => (
             <div
               key={quiz._id}
